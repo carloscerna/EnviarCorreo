@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label>Seleccione los Productos</label>
+    <table id="tablaventas" border="1">
+       <thead>
+          <tr>
+             <th><center>No</center></th>
+             <th><center>Descripción</center></th>
+             <th><center>Precio</center></th>
+             <th><center>Marcar</center></th>
+             <th><center>Jornada ó Licencia u Otros ()</center></th>
+             <th><center>JORNADA</center></th>
+             <th><center>LICENCIA</center></th>
+          </tr>
+       </thead>
+       <tbody>
+          <tr>
+             <th>1</th>
+             <td>Producto 1</td>
+             <td>100 $</td> 
+             <td >
+                <input type="checkbox" id="1" name="1" value="1" onclick="valor(this.value)" >
+             </td>  
+             <td>
+                <input type="radio" name="bedStatus1" id="allot1" checked="checked" value="Jornada-1" onclick="valor2(this.value)">Jornada
+                <input type="radio" name="bedStatus1" id="transfer1" value="Licencia-1" onclick="valor2(this.value)" >Licencia
+             </td>
+             <td >
+                <select id="SelectJ1" name="SelectJ1" title="SelecJ1"  disabled>
+                   <option value="1">1</option>
+                   <option value="2">2</option>
+                </select>
+             </td>       
+             <td >
+                <select id="SelectL1" name="SelectL1" title="SelecL1"  disabled>
+                   <option value="1">3</option>
+                   <option value="2">4</option>
+                </select>
+             </td>                                                              
+          </tr>
+       </tbody>
+    </table>
+
+    
+    <button onclick="mostrarResumenVenta()">Vender</button>  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+    function valor2(Valor){
+        console.log(Valor);
+        JornadaLicencia = Valor.split("-");
+        console.log(JornadaLicencia);
+        switch (JornadaLicencia[0]) {
+            case "Jornada":
+              console.log("Jornada: " + JornadaLicencia[1]);
+              $("#SelectJ"+ JornadaLicencia[1]).prop("disabled",false);
+              $("#SelectL"+ JornadaLicencia[1]).prop("disabled",true);
+              break;
+            case "Licencia":
+              console.log("Licencia" + JornadaLicencia[1]);
+              $("#SelectJ"+ JornadaLicencia[1]).prop("disabled",true);
+              $("#SelectL"+ JornadaLicencia[1]).prop("disabled",false);
+              break;
+          }
+    }
+        function valor(Valor){
+            if ($("#"+Valor).is(':checked')) {
+                // do what you need here     
+                console.log(Valor + "Seleccionado");
+                $("#Select"+Valor).prop("disabled",false);
+                alert("Checked");
+             }
+             else {
+                // do what you need here         
+                console.log("NO Selección.");
+                $("#Select"+Valor).prop("disabled",true);
+                alert("Unchecked");
+             }
+        }
+
+</script>
+    
+    <script type="text/javascript">
+
+
+
+        
+
+        function mostrarResumenVenta()
+           {
+              //Guardo la tabla en una variable
+              var table = document.getElementById('tablaventas');
+              //Guardo la Cantidad de Productos que hay en la Tabla
+              var numProductos = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr').length;
+              //Variable para guardar la cantidad de CheckBox seleccionados
+              var numCheck = 0;
+     
+              //Array que contendra la descripcion de cada producto seleccionado
+              var productos = [];
+              //Array que contendra la Cantidad que proviene del Select dentro de la tabla
+              var cantProductos = [];
+     
+     
+              for (var i = 1; i < numProductos + 1; i++)
+              {
+                 //Aqui tengo el problema ya que no logro obtener el valor booleano del checkbox que esta en la tabla
+                 if (table.rows[i].cells[3].checked = true)
+                 {
+                    //Guardo en el array la descripcion del producto Ejem: Producto 3
+                    productos.push(table.rows[i].cells[1].innerHTML);
+                    //Guardo en el array la Cantidad del producto Ejem: 2
+                    //Aqui tambien tengo el problema, no logro capturar el valor del select que esta en la tabla
+                    cantProductos.push(table.rows[i].cells[4].value);
+                    numCheck = numCheck + 1;
+                 }
+              }
+     
+              
+     
+              for (var i = 0; i < numCheck; i++)
+              {
+                 alert("Esta por Vender: " + numProductos[i] + " unidades del producto " + productos[i]);
+              }
+     
+     
+     
+     
+     
+     
+           }
+     
+     </script>
+</body>
+</html>
