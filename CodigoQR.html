@@ -41,7 +41,7 @@
 		  
 		  
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-6 border border-primary">
 		<div class="result">
 		
 		</div>
@@ -63,10 +63,12 @@
 		$( "#generador" ).submit(function( event ) {
 			var textqr=$("#textqr").val();
 			var sizeqr=$("#sizeqr").val();
+			/// variables
 			parametros={"textqr":textqr,"sizeqr":sizeqr};
+			// Ajax.
 			 $.ajax({
 				 type: "POST",
-				url: "qr.php",
+				url: "CrearCodigoQR.php",
 				data: parametros,
 				success: function(datos){
 					$(".result").html(datos);
