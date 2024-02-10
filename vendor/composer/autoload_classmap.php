@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Stringable' => $vendorDir . '/myclabs/php-enum/stubs/Stringable.php',
     'UltraMsg\\WhatsAppApi' => $vendorDir . '/ultramsg/whatsapp-php-sdk/ultramsg.class.php',
 );
