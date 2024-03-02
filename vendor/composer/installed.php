@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'bb0bdde16b1816b6b2f50e4b1d840a49c50c6e4b',
+        'reference' => '5eec6ba0114c12a264e7d7c596fa0c05a9998a0d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'bb0bdde16b1816b6b2f50e4b1d840a49c50c6e4b',
+            'reference' => '5eec6ba0114c12a264e7d7c596fa0c05a9998a0d',
             'dev_requirement' => false,
         ),
         'bacon/bacon-qr-code' => array(
@@ -153,6 +153,21 @@
             'aliases' => array(),
             'reference' => '9773676c8a1bb1f8d4340a62efe641cf76eda7ec',
             'dev_requirement' => false,
+        ),
+        'twbs/bootstrap' => array(
+            'pretty_version' => 'v5.3.2',
+            'version' => '5.3.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twbs/bootstrap',
+            'aliases' => array(),
+            'reference' => '344e912d04b5b6a04482113eff20ab416ff01048',
+            'dev_requirement' => false,
+        ),
+        'twitter/bootstrap' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v5.3.2',
+            ),
         ),
         'ultramsg/whatsapp-php-sdk' => array(
             'pretty_version' => '2.0.8',

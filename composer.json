@@ -3,6 +3,7 @@
         "phpmailer/phpmailer": "^6.9",
         "ultramsg/whatsapp-php-sdk": "^2.0",
         "endroid/qr-code": "^4.3",
-        "phpoffice/phpspreadsheet": "^1.25"
+        "phpoffice/phpspreadsheet": "^1.25",
+        "twbs/bootstrap": "5.3.2"
     }
 }
