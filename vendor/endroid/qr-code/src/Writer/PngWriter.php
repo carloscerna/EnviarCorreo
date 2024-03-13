@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Endroid\QrCode\Writer;
 
 use Endroid\QrCode\Bacon\MatrixFactory;
-use Endroid\QrCode\Exception\ValidationException;
 use Endroid\QrCode\ImageData\LabelImageData;
 use Endroid\QrCode\ImageData\LogoImageData;
 use Endroid\QrCode\Label\Alignment\LabelAlignmentLeft;
@@ -13,7 +12,6 @@ use Endroid\QrCode\Label\Alignment\LabelAlignmentRight;
 use Endroid\QrCode\Label\LabelInterface;
 use Endroid\QrCode\Logo\LogoInterface;
 use Endroid\QrCode\QrCodeInterface;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeNone;
 use Endroid\QrCode\Writer\Result\PngResult;
 use Endroid\QrCode\Writer\Result\ResultInterface;
 use Zxing\QrReader;
@@ -23,17 +21,17 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
     public function write(QrCodeInterface $qrCode, LogoInterface $logo = null, LabelInterface $label = null, array $options = []): ResultInterface
     {
         if (!extension_loaded('gd')) {
-            throw new \Exception('Unable to generate image: please check if the GD extension is enabled and configured correctly');
+            throw new \Exception('Unable to generate image: check your GD installation');
         }
 
         $matrixFactory = new MatrixFactory();
         $matrix = $matrixFactory->create($qrCode);
 
-        $baseBlockSize = $qrCode->getRoundBlockSizeMode() instanceof RoundBlockSizeModeNone ? 10 : intval($matrix->getBlockSize());
+        $baseBlockSize = 50;
         $baseImage = imagecreatetruecolor($matrix->getBlockCount() * $baseBlockSize, $matrix->getBlockCount() * $baseBlockSize);
 
         if (!$baseImage) {
-            throw new \Exception('Unable to generate image: please check if the GD extension is enabled and configured correctly');
+            throw new \Exception('Unable to generate image: check your GD installation');
         }
 
         /** @var int $foregroundColor */
@@ -45,10 +43,16 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
             $qrCode->getForegroundColor()->getAlpha()
         );
 
-        /** @var int $transparentColor */
-        $transparentColor = imagecolorallocatealpha($baseImage, 255, 255, 255, 127);
+        /** @var int $backgroundColor */
+        $backgroundColor = imagecolorallocatealpha(
+            $baseImage,
+            $qrCode->getBackgroundColor()->getRed(),
+            $qrCode->getBackgroundColor()->getGreen(),
+            $qrCode->getBackgroundColor()->getBlue(),
+            $qrCode->getBackgroundColor()->getAlpha()
+        );
 
-        imagefill($baseImage, 0, 0, $transparentColor);
+        imagefill($baseImage, 0, 0, $backgroundColor);
 
         for ($rowIndex = 0; $rowIndex < $matrix->getBlockCount(); ++$rowIndex) {
             for ($columnIndex = 0; $columnIndex < $matrix->getBlockCount(); ++$columnIndex) {
@@ -57,8 +61,8 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
                         $baseImage,
                         $columnIndex * $baseBlockSize,
                         $rowIndex * $baseBlockSize,
-                        ($columnIndex + 1) * $baseBlockSize - 1,
-                        ($rowIndex + 1) * $baseBlockSize - 1,
+                        ($columnIndex + 1) * $baseBlockSize,
+                        ($rowIndex + 1) * $baseBlockSize,
                         $foregroundColor
                     );
                 }
@@ -76,7 +80,7 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
         $targetImage = imagecreatetruecolor($targetWidth, $targetHeight);
 
         if (!$targetImage) {
-            throw new \Exception('Unable to generate image: please check if the GD extension is enabled and configured correctly');
+            throw new \Exception('Unable to generate image: check your GD installation');
         }
 
         /** @var int $backgroundColor */
@@ -111,7 +115,7 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
             imagesavealpha($targetImage, true);
         }
 
-        $result = new PngResult($matrix, $targetImage);
+        $result = new PngResult($targetImage);
 
         if ($logo instanceof LogoInterface) {
             $result = $this->addLogo($logo, $result);
@@ -133,17 +137,27 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
         }
 
         $targetImage = $result->getImage();
-        $matrix = $result->getMatrix();
 
         if ($logoImageData->getPunchoutBackground()) {
             /** @var int $transparent */
             $transparent = imagecolorallocatealpha($targetImage, 255, 255, 255, 127);
             imagealphablending($targetImage, false);
-            $xOffsetStart = intval($matrix->getOuterSize() / 2 - $logoImageData->getWidth() / 2);
-            $yOffsetStart = intval($matrix->getOuterSize() / 2 - $logoImageData->getHeight() / 2);
-            for ($xOffset = $xOffsetStart; $xOffset < $xOffsetStart + $logoImageData->getWidth(); ++$xOffset) {
-                for ($yOffset = $yOffsetStart; $yOffset < $yOffsetStart + $logoImageData->getHeight(); ++$yOffset) {
-                    imagesetpixel($targetImage, $xOffset, $yOffset, $transparent);
+            for (
+                $x_offset = intval(imagesx($targetImage) / 2 - $logoImageData->getWidth() / 2);
+                $x_offset < intval(imagesx($targetImage) / 2 - $logoImageData->getWidth() / 2) + $logoImageData->getWidth();
+                ++$x_offset
+            ) {
+                for (
+                    $y_offset = intval(imagesy($targetImage) / 2 - $logoImageData->getHeight() / 2);
+                    $y_offset < intval(imagesy($targetImage) / 2 - $logoImageData->getHeight() / 2) + $logoImageData->getHeight();
+                    ++$y_offset
+                ) {
+                    imagesetpixel(
+                        $targetImage,
+                        $x_offset,
+                        $y_offset,
+                        $transparent
+                    );
                 }
             }
         }
@@ -151,8 +165,8 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
         imagecopyresampled(
             $targetImage,
             $logoImageData->getImage(),
-            intval($matrix->getOuterSize() / 2 - $logoImageData->getWidth() / 2),
-            intval($matrix->getOuterSize() / 2 - $logoImageData->getHeight() / 2),
+            intval(imagesx($targetImage) / 2 - $logoImageData->getWidth() / 2),
+            intval(imagesx($targetImage) / 2 - $logoImageData->getHeight() / 2),
             0,
             0,
             $logoImageData->getWidth(),
@@ -165,7 +179,7 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
             imagedestroy($logoImageData->getImage());
         }
 
-        return new PngResult($matrix, $targetImage);
+        return new PngResult($targetImage);
     }
 
     private function addLabel(LabelInterface $label, PngResult $result): PngResult
@@ -194,7 +208,7 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
 
         imagettftext($targetImage, $label->getFont()->getSize(), 0, $x, $y, $textColor, $label->getFont()->getPath(), $label->getText());
 
-        return new PngResult($result->getMatrix(), $targetImage);
+        return new PngResult($targetImage);
     }
 
     public function validateResult(ResultInterface $result, string $expectedData): void
@@ -202,16 +216,17 @@ final class PngWriter implements WriterInterface, ValidatingWriterInterface
         $string = $result->getString();
 
         if (!class_exists(QrReader::class)) {
-            throw ValidationException::createForMissingPackage('khanamiryan/qrcode-detector-decoder');
+            throw new \Exception('Please install khanamiryan/qrcode-detector-decoder or disable image validation');
         }
 
         if (PHP_VERSION_ID >= 80000) {
-            throw ValidationException::createForIncompatiblePhpVersion();
+            throw new \Exception('The validator is not compatible with PHP 8 yet, see https://github.com/khanamiryan/php-qrcode-detector-decoder/pull/103');
         }
 
         $reader = new QrReader($string, QrReader::SOURCE_TYPE_BLOB);
         if ($reader->text() !== $expectedData) {
-            throw ValidationException::createForInvalidData($expectedData, strval($reader->text()));
+            throw new \Exception('Built-in validation reader read "'.$reader->text().'" instead of "'.$expectedData.'".
+                 Adjust your parameters to increase readability or disable built-in validation.');
         }
     }
 }

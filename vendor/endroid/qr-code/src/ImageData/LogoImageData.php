@@ -8,15 +8,23 @@ use Endroid\QrCode\Logo\LogoInterface;
 
 class LogoImageData
 {
-    private string $data;
+    /** @var string */
+    private $data;
 
     /** @var mixed */
     private $image;
 
-    private string $mimeType;
-    private int $width;
-    private int $height;
-    private bool $punchoutBackground;
+    /** @var string */
+    private $mimeType;
+
+    /** @var int */
+    private $width;
+
+    /** @var int */
+    private $height;
+
+    /** @var bool */
+    private $punchoutBackground;
 
     /** @param mixed $image */
     private function __construct(
@@ -60,7 +68,7 @@ class LogoImageData
             return new self($data, null, $mimeType, $width, $height, $logo->getPunchoutBackground());
         }
 
-        $image = @imagecreatefromstring($data);
+        $image = imagecreatefromstring($data);
 
         if (!$image) {
             throw new \Exception(sprintf('Unable to parse image data at path "%s"', $logo->getPath()));
@@ -92,10 +100,6 @@ class LogoImageData
     /** @return mixed */
     public function getImage()
     {
-        if (null === $this->image) {
-            throw new \Exception('SVG Images have no image resource');
-        }
-
         return $this->image;
     }
 

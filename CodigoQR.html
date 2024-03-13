@@ -61,10 +61,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
 		$( "#generador" ).submit(function( event ) {
+			var textoAdicionalUrl = "https://admin.factura.gob.sv/consultaPublica?ambiente=00&";
+			var textoAdicionalCodigo = "codGen=&";
+			var textoAdcionalFechaEmision = "fechaEmi=";
 			var textqr=$("#textqr").val();
 			var sizeqr=$("#sizeqr").val();
 			/// variables
-			parametros={"textqr":textqr,"sizeqr":sizeqr};
+			//parametros={"textqr":textoAdicionalUrl + textoqr + textoAdicionalCodigo + textoAdcionalFechaEmision,"sizeqr":sizeqr};
+			parametros={"textqr": textqr,"sizeqr":sizeqr};
 			// Ajax.
 			 $.ajax({
 				 type: "POST",

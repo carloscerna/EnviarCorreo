@@ -95,11 +95,11 @@ final class PdfWriter implements WriterInterface
 
         if ($label instanceof LabelInterface) {
             $fpdf->SetXY($x, $y + $matrix->getOuterSize() + $labelSpace - 25);
-            $fpdf->SetFont('Helvetica', '', $label->getFont()->getSize());
+            $fpdf->SetFont('Helvetica', null, $label->getFont()->getSize());
             $fpdf->Cell($matrix->getOuterSize(), 0, $label->getText(), 0, 0, 'C');
         }
 
-        return new PdfResult($matrix, $fpdf);
+        return new PdfResult($fpdf);
     }
 
     private function addLogo(LogoInterface $logo, \FPDF $fpdf, float $x, float $y, float $size): void
@@ -109,11 +109,7 @@ final class PdfWriter implements WriterInterface
         $logoWidth = $logo->getResizeToWidth();
 
         if (null === $logoHeight || null === $logoWidth) {
-            $imageSize = \getimagesize($logoPath);
-            if (!$imageSize) {
-                throw new \Exception(sprintf('Unable to read image size for logo "%s"', $logoPath));
-            }
-            [$logoSourceWidth, $logoSourceHeight] = $imageSize;
+            [$logoSourceWidth, $logoSourceHeight] = \getimagesize($logoPath);
 
             if (null === $logoWidth) {
                 $logoWidth = (int) $logoSourceWidth;
@@ -125,8 +121,8 @@ final class PdfWriter implements WriterInterface
             }
         }
 
-        $logoX = $x + $size / 2 - $logoWidth / 2;
-        $logoY = $y + $size / 2 - $logoHeight / 2;
+        $logoX = $x + $size / 2 - (int) $logoWidth / 2;
+        $logoY = $y + $size / 2 - (int) $logoHeight / 2;
 
         $fpdf->Image($logoPath, $logoX, $logoY, $logoWidth, $logoHeight);
     }
