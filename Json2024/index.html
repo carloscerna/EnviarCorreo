@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Json 2024</title>
+      <!-- jQuery V3.4.1 -->
+      <script src="../js/jquery-3.4.1.min.js"></script>
+
+    <script type="text/Javascript">
+        // JSON.parse() - converitr un string JSON a un objeto javascript.
+/*
+        var cadena = '{"nombre":"Carlos","edad":"46","pais":"El Salvador"}';
+        var ObjetoJSON = JSON.parse(cadena);
+        console.log(ObjetoJSON);
+        console.log(ObjetoJSON.pais);
+
+        // JSON.stringify - convertir un objeto javascript a JSON string.
+
+        var objetoJS = {nombre:"Juan", edad: "46", pais: "El Salvador"}; //esto es un objeto JavaScript.
+        console.log(objetoJS);
+        var miJson = JSON.stringify(objetoJS);
+        console.log(miJson);
+        //convertir un arra javascript a json string.
+        var arreglo = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]; // array javascript
+        console.log(arreglo);
+        var miJson = JSON.stringify(arreglo);
+        console.log(miJson);
+
+        //1.string.
+        var cadena = {"nombre":"Carlos"};
+        //console.log(cadena);
+        // 2. numeros.
+        var numeros = {"edad":"46"};
+        //console.log(numeros);
+        // 3. objetos JSON.
+        var variables = {"nombre":"Carlos", "apellidos":"Cerna"};
+        //console.log(variables.nombre);
+        // 4. matrices.
+        // 4.1 array simple
+        var arraySimple = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]; // array javascript
+        //console.log(arraySimple[0]);
+        // 4.2 array de objetos.
+        var arrayDeObjetos = [
+            {"nombre":"Juan","edad":"25"},
+            {"nombre":"Tomás","edad":"30"},
+            {"nombre":"Norma","edad":"45"}
+        ];
+        //console.log(arrayDeObjetos);
+        // 5. varlores como true, false, null.
+        var varTrue = true; var varFalse = false;
+        //console.log(varTrue);
+        //console.log(varFalse);
+        // 6. una conviación o anidación de la anteriores.
+        var objetoComplejo = {
+            "nombre": "Carlos",
+            "edad": 46,
+            "boolean":  true,
+            "edadhijos": [10,12,16],
+            "educacion": {
+                "primaria": "Escuela",
+                "secundaria": "Colegio Nacional",
+                "universidad": ["abogacia","medicina"]
+            },
+            "valor": null,
+
+        };
+        console.log(objetoComplejo.educacion.universidad[1]);
+*/
+    </script>
+
+<script type="text/Javascript">
+
+
+*/
+var token = "";
+var firmaDocumentoBody = "";
+// ESQUEMA DE FACTURA CONSUMIDOR FINAL (FACTURA)
+var miArray = 
+{
+  "identificacion":{
+    "version":1,
+    "ambiente":"00",
+    "tipoDte":"01",
+    "numeroControl":"DTE-01-00000000-000000000000005",// GENERAR CODIGO A DISCRECION DEPENDE DEL TIPO DE FATURA "^DTE-01-[A-Z0-9]{8}-[0-9]{15}$"
+    "codigoGeneracion":"A23CDBC1-B1E5-46FE-C80E-C8ACA292EA86", // GENERAR CODIGO DE 36 CARACTERES
+    "tipoModelo":1,
+    "tipoOperacion":1,
+    "tipoContingencia":null,
+    "motivoContin":null,
+    "fecEmi":"2024-03-13",
+    "horEmi":"02:00:29",
+    "tipoMoneda":"USD"
+  },
+  "documentoRelacionado":null,
+  "emisor":{
+    "nit":"02100405821100",
+    "nrc":"2894207",
+    "nombre":"SILVIA VERONICA RAMIREZ DE GARCIA",
+    "codActividad":"86203",
+    "descActividad":"SERVICIOS MEDICOS",
+    "nombreComercial":"SILVIA VERONICA RAMIREZ DE GARCIA",
+    "tipoEstablecimiento":"20",
+    "direccion":{
+      "departamento":"02",
+      "municipio":"10",
+      "complemento":"Samta Ana"
+    },
+    "telefono":"79516212",
+    "codEstableMH": null,
+    "codEstable": null,
+    "codPuntoVentaMH": null,
+    "codPuntoVenta": null,
+    "correo":"carlos.w.cerna@gmail.com"
+  },
+  "receptor":{
+    "tipoDocumento":"37",
+    "numDocumento":"00000000000000",
+    "nrc":null,
+    "nombre":"Cliente General",
+    "codActividad":null,
+    "descActividad":null,
+    "direccion":{
+      "departamento":"06",
+      "municipio":"14",
+      "complemento":"San Salvador"
+    },
+    "telefono":"79516212",
+    "correo":"carlos.w.cerna@gmail.com"
+  },
+  "otrosDocumentos":null,
+  "ventaTercero":null,
+  "cuerpoDocumento":[
+    {
+      "numItem":1,
+      "tipoItem":3,
+      "numeroDocumento":null,
+      "cantidad":1,
+      "codigo":"001001",
+      "codTributo":null,
+      "uniMedida":99,
+      "descripcion":"servicios",
+      "precioUni":113,
+      "montoDescu":0,
+      "ventaNoSuj":0,
+      "ventaExenta":0,
+      "ventaGravada":113,
+      "tributos":null,
+      "psv":0,
+      "noGravado":0,
+      "ivaItem":13
+    },
+    {
+      "numItem":2,
+      "tipoItem":3,
+      "numeroDocumento":null,
+      "cantidad":1,
+      "codigo":"001002",
+      "codTributo":null,
+      "uniMedida":99,
+      "descripcion":"OTROS SERVICIOS VARIOS",
+      "precioUni":28.25,
+      "montoDescu":0,
+      "ventaNoSuj":0,
+      "ventaExenta":0,
+      "ventaGravada":28.25,
+      "tributos":null,
+      "psv":0,
+      "noGravado":0,
+      "ivaItem":3.25
+    }
+  ],
+  "resumen":{
+    "totalNoSuj":0,
+    "totalExenta":0,
+    "totalGravada":141.25,
+    "subTotalVentas":141.25,
+    "descuNoSuj":0,
+    "descuExenta":0,
+    "descuGravada":0,
+    "porcentajeDescuento":0,
+    "totalDescu":0,
+    "tributos":null,
+    "subTotal":141.25,
+    "ivaRete1":0,
+    "reteRenta":0,
+    "montoTotalOperacion":141.25,
+    "totalNoGravado":0,
+    "totalPagar":141.25,
+    "totalLetras":"CIENTO CUARENTA Y UN DOLARES CON 25/100 CENTAVOS",
+    "totalIva":16.25,
+    "saldoFavor":0,
+    "condicionOperacion":1,
+    "pagos":null,
+    "numPagoElectronico":null
+  },
+  "extension":{
+    "nombEntrega":null,
+    "docuEntrega":null,
+    "nombRecibe":null,
+    "docuRecibe":null,
+    "observaciones":null,
+    "placaVehiculo":null
+  },
+  "apendice":null
+};
+// INICIO DE FIRMA DEL DOCUMENTO A ENVIAR
+        var newData =   {
+            "nit":"02100405821100",
+            "activo":true,
+            "passwordPri": "Orellana1",
+            "dteJson": miArray
+            };
+    var dataJson = JSON.stringify(newData);
+    
+        $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                async: false,
+                url:"http://localhost:8113/firmardocumento/",
+                data: dataJson,
+                    success: function(data) {
+                        //console.log(data);
+                        var strJson = JSON.stringify(data); // convertir el objeto
+                        var jsonParseado = JSON.parse(strJson);	// pasearlo
+                        console.log(jsonParseado);
+                        $("#firmadocumento").text(strJson);
+                        firmaDocumentoBody = jsonParseado["body"];
+                        $("#firmabody").text(firmaDocumentoBody);
+                    }	// FIN DEL SUCCESS.
+            });	// FINAL DEL AJAX.++
+            
+// AJAX AUTENTICACIÓN DEL USUARIO.
+var newDataString = "User-Agent=Casa&user=02100405821100&pwd=Orellana1*";
+$.ajax({
+  type: 'POST',
+  url: "https://apitest.dtes.mh.gob.sv/seguridad/auth",
+  contentType: 'application/x-www-form-urlencoded',
+  async: false,
+  dataType: 'json',
+  data: newDataString,
+  success: function (data) {
+    var strJson = JSON.stringify(data); // convertir el objeto
+    var jsonParseado = JSON.parse(strJson);	// pasearlo
+    console.log(jsonParseado);
+
+      $("#AUTENTICACION").text(strJson);
+      token = jsonParseado["body"].token;
+      $("#Token").text(token);
+  }   // success ajax.
+  });
+
+
+      // RECEPCIÓN DEL DTE.
+      var newHeader = {"Authorization": token};
+      var newData =   {
+        "User-Agent":"Casa",
+        "ambiente": "00",
+        "idEnvio":1,
+        "version":1,
+        "tipoDte":"01",
+        "documento": firmaDocumentoBody,
+        "codigoGeneracion": ""
+        };
+      var dataJson = JSON.stringify(newData);
+      var headerJson = JSON.stringify(newHeader);
+        $.ajax({
+          cache: false,
+          type: "POST",
+          dataType: "json",
+          contentType: "application/json",
+          beforeSend: function (xhr){ 
+            xhr.setRequestHeader('Authorization', token); 
+          },
+          crossDomain: true,
+          url:"https://apitest.dtes.mh.gob.sv/fesv/recepciondte",
+          data: dataJson,
+              success: function(data) {
+                  console.log(data);
+                  var strJson = JSON.stringify(data); // convertir el objeto
+                  var jsonParseado = JSON.parse(strJson);	// pasearlo
+                  //console.log(jsonParseado);
+                  $("#Recepcion").text(strJson);
+              },	// FIN DEL SUCCESS.
+              error: function (xhr,ajaxOptions,throwError){
+                //Error block 
+                console.log(xhr);
+              },
+        });	// FINAL DEL AJAX.
+
+  
+
+
+</script>
+
+</head>
+<body>
+    <h2>DTE: FIRMA</h2>
+    <div id="firmadocumento"></div>
+    <h2>DTE: FIRMA - BODY</h2>
+    <div id="firmabody"></div>
+
+    <h2>DTE: SERVICIO DE AUTENTICACIÓN</h2>
+    <div id="AUTENTICACION"></div>
+    <h2>DTE: SERVICIO DE AUTENTICACIÓN - TOKEN</h2>
+    <div id="Token"></div>
+
+    <h2>DTE: SERVICIO DE RECEPCIÓN (MODELO UNO A UNO)</h2>
+    <div id="Recepcion"></div>
+</body>
+</html>
